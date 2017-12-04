@@ -145,7 +145,7 @@ Here is a simple IP address validator. For 1,000,000 cycles against `127.0.0.1` 
 import sys
 
 try:
-  groups = list(map(int, sys.argv[1].split('.')))
+  groups = [int(i) for i in sys.argv[1].split('.')]
 except ValueError:
   sys.exit("Failed to match.")
 
@@ -155,7 +155,7 @@ for octet in groups:
 print("Looks OK.")
 ```
 
-Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.9` seconds to run.
+Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.7` seconds to run.
 
 `RegEx: Took: 4.677459 seconds`
-`Pure: Took: 2.948437 seconds`
+`Pure: Took: 2.743565 seconds`
