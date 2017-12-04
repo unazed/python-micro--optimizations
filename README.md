@@ -171,3 +171,18 @@ Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.7`
 
 `RegEx: Took: 4.677459 seconds`
 `Pure: Took: 2.743565 seconds`
+
+
+# `%` formatting is still faster than `str.format`
+
+
+```
+ unazed@unazed  ~  python3.6 -m timeit -c "'%s %s%c' % ('hello', 'world', '!')"
+100000000 loops, best of 3: 0.0164 usec per loop
+ unazed@unazed  ~  python3.6 -m timeit -c "'{} {}{}'.format('hello', 'world', '!')"                                                                          
+1000000 loops, best of 3: 0.395 usec per loop
+ unazed@unazed  ~  python3.6 -m timeit -c "'{0} {1}{2}'.format('hello', 'world', '!')"                                               
+1000000 loops, best of 3: 0.431 usec per loop
+```
+
+say no more
