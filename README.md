@@ -194,3 +194,11 @@ say no more
 `sys.exit`, `exit` and `quit` do all the same underlying task, the former `sys.exit` is preferred however opposed to the other two. However when you don't already have `sys` imported you might instead `raise SystemExit` which doesn't require importing the `sys` library.
 
 `os._exit` is a bit bad, it doesn't call any clean-up procedures unlike the other three choices and just terminates the process.
+
+
+# `while 1:` instead of `while True:`
+
+
+In Python 2: `True` is a global variable, so for every reference you make, it equates to a `globals()` variable retrieval which isn't very fast, in Python 3: `True` is a keyword, so it's a built in piece of syntax which doesn't need to be loaded, it's the constant integer equivalent of `1` and so `False` for `0`.
+
+Also, in Python you might notice that integers aren't globals nor locals - they're `CONST`s, so they're faster to load than locals and globals, you might also know (if you've read what I've said above) that `1` is the same as `True`, so you can replace the two and it'll equalize performance over all Python versions 2 to 3.
