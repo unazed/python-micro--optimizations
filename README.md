@@ -186,3 +186,11 @@ Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.7`
 ```
 
 say no more
+
+
+# `sys.exit`, `os._exit`, `exit`, `quit` and `SystemExit`
+
+
+`sys.exit`, `exit` and `quit` do all the same underlying task, the former `sys.exit` is preferred however opposed to the other two. However when you don't already have `sys` imported you might instead `raise SystemExit` which doesn't require importing the `sys` library.
+
+`os._exit` is a bit bad, it doesn't call any clean-up procedures unlike the other three choices and just terminates the process.
