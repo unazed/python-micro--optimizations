@@ -115,3 +115,47 @@ def good_function(*args, **kwargs):
 
 Primitively, the concept applied is returning either `True` or `False` because strings are hard-coded, nasty and only require predefining them at start of code so that you don't make your code extremely static.
 `True`, `False` and `None` are all predefined and standard values; they let you implement checks like `if good_function(1, 'oops'):` instead of having to do `if bad_function(1, 'oops') == "good"`. An issue that might arise is when you need more than three return values -- which typically indicates you're doing something wrong and should revise your function -- however, in these cases you can consider options like: a flag byte, raising exceptions, building another type, or returning different integers like 2, -1, 255 etc.
+
+
+# pure python is faster than regular expressions, so optimize where you can
+
+
+```py
+import re
+import sys
+
+
+pattern = re.compile(r"(\d+)\.(\d+)\.(\d+)\.(\d+)")
+match = pattern.match(sys.argv[1])
+
+if not match:
+  sys.exit("Failed to match against %r." % sys.argv[1])
+
+for octet in match.groups():
+  if not (0 <= int(octet) <= 255):
+    sys.exit("Invalid octet %r." % octet)
+print("Looks OK.")
+```
+
+
+Here is a simple IP address validator. For 1,000,000 cycles against `127.0.0.1` it took the logic `4.677` seconds to finish, however with a pure Python version:
+
+
+```py
+import sys
+
+try:
+  groups = list(map(int, sys.argv[1].split('.')))
+except ValueError:
+  sys.exit("Failed to match.")
+
+for octet in groups:
+  if not (0 <= octet <= 255):
+    sys.exit("Invalid octet %d." % octet)
+print("Looks OK.")
+```
+
+Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.9` seconds to run.
+
+`RegEx: Took: 4.677459 seconds`
+`Pure: Took: 2.948437 seconds`
