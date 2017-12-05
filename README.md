@@ -2,6 +2,11 @@
 a handful of optimizations, tricks and cool things i've learned while doing python
 
 
+Just so you know, this only exists for the people that want to micro-optimize code and have the consequence of more unreadable, unmanageable and possibly incompatible code. I don't personally like any of the people that, when you optimize, say *"oh if you're going for speed, why use Python?"* - maybe it just peaks my curiosity to make my program as fast as it can be and as efficient sometimes and when people tell you to, in conclusion, learn another language; it pours a huge amount of fuel onto a tenderly fire that was burning in you.
+
+Never should you follow many of these practices in industrial or professional environments; although exceptions can be made, most of the optimizations fall under the categories listed in the former paragraph (more unreadable, unmanageable and possibly incompatible code.
+
+
 # return statements in single else clauses at the end of functions
 
 
@@ -208,3 +213,125 @@ Also, in Python you might notice that integers aren't globals nor locals - they'
 
 
 Always remember that `open(...)`'s default access mode is `r`/`read`, so there's no need to go write `open("file", 'r')`- rather - `open("file")`... oh and use context managers.
+
+
+# `seq.copy()`, `seq[:]` or `list(seq)`?
+
+
+Note: `list.copy()` doesn't exist on Python 2
+
+```
+ unazed@unazed  ~  python3.6 -m timeit -n 10000000 --setup "seq = [1, 2, 3]" -c "seq.copy()" 
+10000000 loops, best of 3: 0.128 usec per loop
+ unazed@unazed  ~  python3.6 -m timeit -n 10000000 --setup "seq = [1, 2, 3]" -c "seq[:]"    
+10000000 loops, best of 3: 0.112 usec per loop
+ unazed@unazed  ~  python3.6 -m timeit -n 10000000 --setup "seq = [1, 2, 3]" -c "list(seq)"
+10000000 loops, best of 3: 0.226 usec per loop
+```
+
+The literal notation `seq[:]` is faster than `seq.copy()` which are both faster than `list(seq)`, but this is only for a three element list - here follows testing for lists with `256` Python 3.6.3 integers which all have sizes of `48` bytes, therefore making the list approximately, perfectly, 12KB.
+
+```
+ unazed@unazed  ~  python3.6 -m timeit -n 10000000 --setup "seq = [1<<160]*256" -c "seq.copy()" 
+10000000 loops, best of 3: 1.36 usec per loop
+ unazed@unazed  ~  python3.6 -m timeit -n 10000000 --setup "seq = [1<<160]*256" -c "seq[:]"
+10000000 loops, best of 3: 1.35 usec per loop
+ unazed@unazed  ~  python3.6 -m timeit -n 10000000 --setup "seq = [1<<160]*256" -c "list(seq)"
+10000000 loops, best of 3: 1.39 usec per loop
+```
+
+The operations which are the fastest follow the same sequence as given for the smaller, three element list above. First `seq[:]`, secondly `seq.copy()` and lastly `list(seq)`.
+
+Ahead of this, there'll be a table for different sized lists with the same `48` byte integer just a different magnitude. Also as a note, the cycles to be run will be smaller else it'll take hours for a single operation to execute; so the cycle size will be `100000`.
+
+
+| Operation | Amount of Elements | Time Taken |
+|-----------|--------------------|------------|
+| `seq.copy()` | 512             | 3.08 usec  |
+| `seq[:]`     | 512             | 3.06 usec  |
+| `list(seq)`  | 512             | 3.05 usec  |
+| `seq.copy()` | 1024            | 5.94 usec  |
+| `seq[:]`     | 1024            | 5.93 usec  |
+| `list(seq)`  | 1024            | 5.85 usec  |
+| `seq.copy()` | 2048            | 11.8 usec  |
+| `seq[:]`     | 2048            | 11.8 usec  |
+| `list(seq)`  | 2048            | 11.7 usec  |
+| `seq.copy()` | 4192            | 19.7 usec  |
+| `seq[:]`     | 4192            | 19.7 usec  |
+| `list(seq)`  | 4192            | 18.6 usec  |
+| `seq.copy()` | 8192            | 49.4 usec  |
+| `seq[:]`     | 8192            | 50.1 usec  |
+| `list(seq)`  | 8192            | 46.9 usec  |
+| `seq.copy()` | 16384           | 100 usec   |
+| `seq[:]`     | 16384           | 100 usec   |
+| `list(seq)`  | 16384           | 93.6 usec  |
+| `seq.copy()` | 32768           | 156 usec   |
+| `seq[:]`     | 32768           | 156 usec   |
+| `list(seq)`  | 32768           | 142 usec   |
+| `seq.copy()` | 65536           | 315 usec   |
+| `seq[:]`     | 65536           | 313 usec   |
+| `list(seq)`  | 65536           | 286 usec   |
+
+Now it's either that I'm drugged or there is actually a speed gain using `list(seq)` on bigger lists but I'm actually perplexed myself about this table, so on doing tests for smaller-sized lists ranging from values between the range of 2 and 256 assuming `log_2 n ∈ Z` with a cycle size of `1000000`.
+
+| Operation | Amount of Elements | Time Taken |
+|-----------|--------------------|------------|
+| `seq.copy()` | 2               | 0.129 usec |
+| `seq[:]`     | 2               | 0.124 usec |
+| `list(seq)`  | 2               | 0.228 usec |
+| `seq.copy()` | 4               | 0.131 usec |
+| `seq[:]`     | 4               | 0.137 usec |
+| `list(seq)`  | 4               | 0.236 usec |
+| `seq.copy()` | 8               | 0.150 usec |
+| `seq[:]`     | 8               | 0.141 usec |
+| `list(seq)`  | 8               | 0.237 usec |
+| `seq.copy()` | 16              | 0.189 usec |
+| `seq[:]`     | 16              | 0.178 usec |
+| `list(seq)`  | 16              | 0.271 usec |
+| `seq.copy()` | 32              | 0.263 usec |
+| `seq[:]`     | 32              | 0.244 usec |
+| `list(seq)`  | 32              | 0.382 usec |
+| `seq.copy()` | 64              | 0.433 usec |
+| `seq[:]`     | 64              | 0.408 usec |
+| `list(seq)`  | 64              | 0.518 usec |
+| `seq.copy()` | 128             | 0.781 usec |
+| `seq[:]`     | 128             | 0.768 usec |
+| `list(seq)`  | 128             | 0.835 usec |
+| `seq.copy()` | 256             | 1.35 usec  |
+| `seq[:]`     | 256             | 1.34 usec  |
+| `list(seq)`  | 256             | 1.39 usec  |
+
+
+So this table agrees with the fact `list(seq)` is slower, so with this, you can create the deduction that `list(seq)` is slower for all lists of magnitude under (thereabout) `1024`.
+
+But I don't want a *rough* assumption, so I'll test for all values between 512 and 1024 non-inclusively. All in steps of `32` because I don't want the table to be humongous.
+
+
+| Operation | Amount of Elements | Time Taken |
+|-----------|--------------------|------------|
+| `seq.copy()` | 544             | 2.65 usec  |
+| `seq[:]`     | 544             | 2.65 usec  |
+| `list(seq)`  | 544             | 2.64 usec  |
+| `seq.copy()` | 576             | 2.79 usec  |
+| `seq[:]`     | 576             | 2.80 usec  |
+| `list(seq)`  | 576             | 2.77 usec  |
+| `seq.copy()` | 608             | 2.94 usec  |
+| `seq[:]`     | 608             | 3.00 usec  |
+| `list(seq)`  | 608             | 2.92 usec  |
+| `seq.copy()` | 640             | 3.12 usec  |
+| `seq[:]`     | 640             | 3.11 usec  |
+| `list(seq)`  | 640             | 3.05 usec  |
+| `seq.copy()` | 672             | 3.24 usec  |
+| `seq[:]`     | 672             | 3.27 usec  |
+| `list(seq)`  | 672             | 3.21 usec  |
+| `seq.copy()` | 704             | 3.42 usec  |
+| `seq[:]`     | 704             | 3.38 usec  |
+| `list(seq)`  | 704             | 3.36 usec  |
+
+
+Now, I cut the list early because (a) I'm not going to wait 20 minutes for the rest of it to complete and (b) I've found where the `list(seq)` speed converges into a speed faster than the other two operations.
+As you can see, for the first three records, `seq.copy()` and `seq[:]` draw in speed and `list(seq)` is 0.01 usec faster, then for the next record: `seq.copy()` is second, `seq{:]` is last, and `list(seq)` overtakes first, then finally the third record shows `seq.copy()` coming second again, `seq[:]` coming last and `list(seq)` staying in first for speed.
+
+**CONCLUSION:**
+
+`seq.copy()`, for all sequences with magnitudes below 544, will be second fastest to `seq[:]` and the slowest method will be `list(seq)`; however, for all sequences with a bigger magnitude, `list(seq)` will be fastest and both `seq[:]`and `seq.copy()` will have a seemingly random disparity. 
