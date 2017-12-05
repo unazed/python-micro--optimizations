@@ -335,3 +335,5 @@ As you can see, for the first three records, `seq.copy()` and `seq[:]` draw in s
 **CONCLUSION:**
 
 `seq.copy()`, for all sequences with magnitudes below 544, will be second fastest to `seq[:]` and the slowest method will be `list(seq)`; however, for all sequences with a bigger magnitude, `list(seq)` will be fastest and both `seq[:]`and `seq.copy()` will have a seemingly random disparity. 
+
+*NOTE:* Element size doesn't seem to affect the operations.
