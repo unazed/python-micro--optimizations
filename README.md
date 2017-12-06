@@ -337,3 +337,24 @@ As you can see, for the first three records, `seq.copy()` and `seq[:]` draw in s
 `seq.copy()` for all sequences with magnitude below 544, will be second fastest to `seq[:]` and the slowest method will be `list(seq)`; however, for all sequences with a bigger magnitude, `list(seq)` will be fastest and both `seq[:]`and `seq.copy()` will have a seemingly random disparity. 
 
 *NOTE:* Element size doesn't seem to affect the operations' speed.
+
+
+# should i use json, xml, yaml, csv or my own format?
+
+
+This presents many of the same issues that you would deal with when you're creating another form of implementation for something already standardized in many ways. Firstly, you're going to make many, many mistakes in the design and most likely not consider the many external use-cases it could propose, thus making the implementation worthless as a whole because unless you can find other places where the certain design can be integrated without any tweaking -- there's no generality therefore there's no real reusability.
+
+JSON is a versatile, nice-to-read and flexible notation. It has the direct relation with Python thereby that the `dict` type follows a more open-ended support for objects.
+
+XML is a markup language which is just a tad bit more explicit than something like JSON; but in my personal opinion it looks a bit bloated and monotone with the tags and it's less readable than JSON. Python has a third-party library for parsing XML, but you'll have to download it from PyPI.
+
+YAML is a greatly user-friendly format which isn't really as common as any of the other two formats, but it's still comparatively different.
+
+CSV is just a BTEC way of doing any of the above in a lazy fashion by just separating values (that hopefully don't have commas already) with a comma delimiter. Although as this format is very simple, it is as well extensible to different delimiters like perhaps `\x00` or `\xFF` for user data.
+
+For your own format, as I've said in the first part of my explanation; you have to make sure that your format can be applied anywhere without any possible incompatibilities, also you should never tie a metaphorical knot on it; if you leave it open-ended it'll be able to be put under one's completely different interpretation thus customizable and plugged into a different environment. 
+You can see this in place for the four formats listed above as JSON, it's simple and maps `x: ` to `y` where `x` is typically hashable.
+In XML, it's bare-bone but with the implementation of the human - it allows for creating theoretical contexts with a really simple system. But I can't deny it's not much more extensible than JSON.
+YAML and CSV both share the above traits interlinking JSON and XML, thus it should show a common pattern between these widely used notations. And should show how notations are generalized.
+
+The only different thing about all of these ways of displaying information, is the way that it's written. Some are nicer to look at, some are nicer to write and some are nicer to parse.
