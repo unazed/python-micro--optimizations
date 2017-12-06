@@ -302,7 +302,7 @@ Now it's either that I'm drugged or there is actually a speed gain using `list(s
 | `list(seq)`  | 256             | 1.39 usec  |
 
 
-So this table agrees with the fact `list(seq)` is slower, so with this, you can create the deduction that `list(seq)` is slower for all lists of magnitude under (thereabout) `1024`.
+So this table agrees with the fact `list(seq)` is slower, so with this one can deduce that `list(seq)` is slower for all lists of magnitude under (thereabout) `1024`.
 
 But I don't want a *rough* assumption, so I'll test for all values between 512 and 1024 non-inclusively. All in steps of `32` because I don't want the table to be humongous.
 
@@ -311,7 +311,7 @@ But I don't want a *rough* assumption, so I'll test for all values between 512 a
 |-----------|--------------------|------------|
 | `seq.copy()` | 544             | 2.65 usec  |
 | `seq[:]`     | 544             | 2.65 usec  |
-| `list(seq)`  | 544             | 2.64 usec  |
+| `list(seq)`  | 544             | 2.65 usec  |
 | `seq.copy()` | 576             | 2.79 usec  |
 | `seq[:]`     | 576             | 2.80 usec  |
 | `list(seq)`  | 576             | 2.77 usec  |
@@ -334,6 +334,6 @@ As you can see, for the first three records, `seq.copy()` and `seq[:]` draw in s
 
 **CONCLUSION:**
 
-`seq.copy()`, for all sequences with magnitudes below 544, will be second fastest to `seq[:]` and the slowest method will be `list(seq)`; however, for all sequences with a bigger magnitude, `list(seq)` will be fastest and both `seq[:]`and `seq.copy()` will have a seemingly random disparity. 
+`seq.copy()` for all sequences with magnitude below 544, will be second fastest to `seq[:]` and the slowest method will be `list(seq)`; however, for all sequences with a bigger magnitude, `list(seq)` will be fastest and both `seq[:]`and `seq.copy()` will have a seemingly random disparity. 
 
 *NOTE:* Element size doesn't seem to affect the operations' speed.
