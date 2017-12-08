@@ -212,7 +212,9 @@ Also, in Python you might notice that integers aren't globals nor locals - they'
 # implicit better than explicit?
 
 
-Always remember that `open(...)`'s default access mode is `r`/`read`, so there's no need to go write `open("file", 'r')`- rather - `open("file")`... oh and use context managers.
+1) Always remember that `open(...)`'s default access mode is `r`/`read`, so there's no need to go write `open("file", 'r')`- rather - `open("file")`... oh and use context managers.
+
+2) `socket.socket(...)` (as of Python 3) doesn't need to take `family` and `type` parameters, calling `socket.socket()` will automatically create a AF_INET, SOCK_STREAM socket.
 
 
 # `seq.copy()`, `seq[:]` or `list(seq)`?
