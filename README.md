@@ -342,7 +342,7 @@ As you can see, for the first three records, `seq.copy()` and `seq[:]` draw in s
 *NOTE:* Element size doesn't seem to affect the operations' speed.
 
 
-# should i use json, xml, yaml, csv or my own format?
+# should i use json, xml, yaml, csv or create my own format?
 
 
 This presents many of the same issues that you would deal with when you're creating another form of implementation for something already standardized in many ways. Firstly, you're going to make many, many mistakes in the design and most likely not consider the many external use-cases it could propose, thus making the implementation worthless as a whole because unless you can find other places where the certain design can be integrated without any tweaking -- there's no generality therefore there's no real reusability.
@@ -379,7 +379,7 @@ A faster alternative is to do `list[x-1:]`, because of how Python handles slices
 # another way of getting the last element in a list
 
 
-So, there's two [three] ways of getting the last element in a list:
+So, there's two [three] main ways of getting the last element in a list:
 - `list[-1]`
 - for when `list = [1, 2, 3]`, `list[2]` (slower than `list[-1]`?)
 - `list(reversed(list))[0]` (/s)
@@ -395,3 +395,89 @@ last_item = i
 ```
 
 Logical enough, right? Python doesn't have block scopes, so this'd work as intended.
+
+
+# does listening to music whilst coding help in any way/shape or form?
+
+
+Subjectively, it doesn't help me if the music has vocals or something I have to spend time processing and analyzing ephemerally; I miss things out, I make syntax errors and my logic becomes volatile. But I do enjoy a quiet and light tranquil piano melody playing during when I code - but even then I still need my piece of mind when I'm reading things else I'll be distracted even by a single piano note.
+
+Sadly, there's no general answer, I can't tell you that rock music will make your code any worse than somebody else's code would be when they're listening to ASMR; it's all based around how your brain processes things and how you partition your attention. 
+Not going to lie though, those `programming mix`xes are just a tad bit weird.
+
+Cliché-ly, the answer is going to end up being that your own experimentation will lead to your best fit.
+
+
+# should i use raw sockets or should i create my own interface to raw sockets?
+
+
+Using sockets is cool, but so is using sockets and making your own interface. Repetitive code isn't very nice, but the overhead with the function calls isn't efficient. Shorter, concise and readable code is beautiful - but having ability to maximize your code's utility is always nice.
+
+Speaking perfomance-wise, an OOP interface will *always* be slower than the raw, unabstracted interface to the library. When you're creating an interface the only things that you're preventing are semantical mistakes, but all you're really doing is squeezing a bunch of liquids into a container. Sure, they'll stay consistent wherever you pour them; no mistake about that, but any mistakes in the actual 'squeezing' bit, perhaps missing some functionality or failing to generalize it; then you'll just mix one container of incompatible liquid with some reactive surface which'll create a huge mess and practically create the inverse effect that you want to actually achieve.
+
+Raw sockets are faster and more customizable; but their prologues are repeated so many times and equally so their epilogues.
+
+
+```py
+import socket
+import sys
+
+
+sockfd = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sockfd.settimeout(2)
+try:
+  sockfd.connect((host, port))
+except socket.timeout:
+  print("couldn't connect to %s:%s" % (host, port))
+  sys.exit(1)
+...
+sockfd.close()
+```
+
+
+6 references to `socket`, one import from `sys`, 4 references to `sockfd` and the overhead of `try: ... except (,): ...`.
+
+
+```py
+# newsocket.py
+
+import socket
+
+
+class Socket(object):
+  def __init__(self, host, port, connect=True, timeout=2):
+    self.host = host
+    self.ip = ip
+    self.timeout = timeout
+    self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    if connect:
+      self.connect()
+      
+  def connect(self):
+    self._socket.settimeout(self.timeout)
+    try:
+      self._socket.connect((self.host, int(self.ip)))
+    except (socket.timeout, ValueError):
+      return False
+    return True
+  
+  def close(self):
+    self._socket.close()
+    
+
+# main.py
+
+from newsocket import Socket
+
+sockfd = Socket(host, port, False)
+
+if sockfd.connect():
+  print("Connected")
+else:
+  print("couldn't connect to %s:%s" % (host, port))
+  
+sockfd.close()
+```
+
+2 references to `Socket`, 3 references to `sockfd` and not a single `sys.exit`. A drastic improvement from the linear paradigm shown in the other example.
+But, if you have any intellect you'd notice that, well clearly there's waaay more references to `Socket` and there is still a `try: ... except (,): ...` embedded within, just not seen in `main.py`. Well that's the point of an interface and that displays the only real features that ir provides, an interface will never be faster, besides fixing any possible mistkaes that could've been made in the task of rewriting code.
