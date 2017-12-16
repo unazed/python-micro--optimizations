@@ -393,4 +393,4 @@ for i in a:
 last_item = i
 ```
 
-Logical enough, right?
+Logical enough, right? Python doesn't have block scopes, so this'd work as intended.
