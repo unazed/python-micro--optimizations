@@ -360,3 +360,37 @@ In XML, it's bare-bone but with the implementation of the human - it allows for 
 YAML and CSV both share the above traits interlinking JSON and XML, thus it should show a common pattern between these widely used notations. And should show how notations are generalized.
 
 The only different thing about all of these ways of displaying information, is the way that it's written. Some are nicer to look at, some are nicer to write and some are nicer to parse.
+
+
+# len(list) == x
+
+
+A faster alternative is to do `list[x-1:]`, because of how Python handles slices, this won't cause an error like `list[x-1]` would (the `-1` is for zero-indexing):
+
+```
+ unazed@unazed  ~  python3.6 -m timeit -n 20000000 --setup "a = [1, 2, 3]" -c "a[3:]"                                             
+20000000 loops, best of 3: 0.0992 usec per loop
+ unazed@unazed  ~  python3.6 -m timeit -n 20000000 --setup "a = [1, 2, 3]" -c "len(a) == 4"
+20000000 loops, best of 3: 0.105 usec per loop
+```
+
+
+# another way of getting the last element in a list
+
+
+So, there's two [three] ways of getting the last element in a list:
+- `list[-1]`
+- for when `list = [1, 2, 3]`, `list[2]` (slower than `list[-1]`?)
+- `list(reversed(list))[0]` (/s)
+
+But, believe it or not, there's a more case-specific and yet faster way of getting the last item without having to call *any* underlying/hidden nor explicit functions.
+
+```py
+a = [...]
+
+for i in a:
+  ...
+last_item = i
+```
+
+Logical enough, right?
