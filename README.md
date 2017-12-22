@@ -483,7 +483,7 @@ sockfd.close()
 But, if you have any intellect you'd notice that, well clearly there's waaay more references to `Socket` and there is still a `try: ... except (,): ...` embedded within, just not seen in `main.py`. Well that's the point of an interface and that displays the only real features that ir provides, an interface will never be faster, besides fixing any possible mistkaes that could've been made in the task of rewriting code.
 
 
-# list conversion, best methods?
+# list conversion. best methods?
 
 So there's a few ways of converting non-`list` types into lists either for mutability - or, space-consumption:
 
