@@ -481,3 +481,18 @@ sockfd.close()
 
 2 references to `Socket`, 3 references to `sockfd` and not a single `sys.exit`. A drastic improvement from the linear paradigm shown in the other example.
 But, if you have any intellect you'd notice that, well clearly there's waaay more references to `Socket` and there is still a `try: ... except (,): ...` embedded within, just not seen in `main.py`. Well that's the point of an interface and that displays the only real features that ir provides, an interface will never be faster, besides fixing any possible mistkaes that could've been made in the task of rewriting code.
+
+
+# list conversion, best methods?
+
+So there's a few ways of converting non-`list` types into lists either for mutability - or, space-consumption:
+
+- `[*tuple]`
+- `[i for i in tuple]`
+- `list(tuple)`
+
+Here are results for all of them with differing list magnitudes:
+
+[https://i.imgur.com/RIokUAY.png]
+
+Surprisingly, `[i for i in tuple]` was the fastest method of conversion even though it creates a redundant variable, `i` (which is, still, freed.) Also I had a little hunch in my head that the shortest way would be the fastest, however, `[*tuple]` seems to be on the same line of growth as `list(tuple)` is, albeit a tiny bit slower.
