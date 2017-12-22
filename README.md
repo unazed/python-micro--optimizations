@@ -493,6 +493,6 @@ So there's a few ways of converting non-`list` types into lists either for mutab
 
 Here are results for all of them with differing list magnitudes:
 
-[https://i.imgur.com/RIokUAY.png]
+![](https://i.imgur.com/RIokUAY.png)
 
 Surprisingly, `[i for i in tuple]` was the fastest method of conversion even though it creates a redundant variable, `i` (which is, still, freed.) Also I had a little hunch in my head that the shortest way would be the fastest, however, `[*tuple]` seems to be on the same line of growth as `list(tuple)` is, albeit a tiny bit slower.
