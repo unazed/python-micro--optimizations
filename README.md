@@ -108,7 +108,7 @@ Took: 0.001371
 
 Neither Python 3.7.0a2, 3.6.3, 3.2.3, 2.7.14, 2.0.1, 1.6.1 showed any difference for where the `x == None` time was less than `x is None`.
 
-NOTE: `x == 0` and `not x` have different execution speeds as well:
+**NOTE:** `x == 0` and `not x` have different execution speeds as well:
 
 ![](https://i.imgur.com/gcfw7FN.png)
 
