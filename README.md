@@ -182,7 +182,8 @@ Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.7`
 
 **NOTE:** I didn't use `map(...)` since (a) it wouldn't catch any errors until converted to a list (b) when it *is* converted to a list, it'll remove the point of any speed provided by the iterator (c) a list comprehension is faster (d) a list comprehension is more Pythonic.
 
-# `%` formatting is still faster than `str.format`
+
+# `%` formatting is still faster than `str.format
 
 
 ```
@@ -196,6 +197,10 @@ Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.7`
 
 say no more
 
+**NOTE:** But to make it fair; here's the test results that came back for `f` strings, `str.format` and `% formatting`:
+![](https://i.imgur.com/BkSv67f.png)
+
+`% formatting` beats `f` strings roughly by `0.0001` seconds, and all of those beat `str.format` by `0.0002-0.0003`-ish seconds  
 
 # `sys.exit`, `os._exit`, `exit`, `quit` and `SystemExit`
 
