@@ -2,7 +2,9 @@
 a handful of optimizations, tricks and cool things i've learned while doing python
 
 
-Just so you know, this only exists for the people that want to micro-optimize code and have the consequence of possibly more unreadable, unmanageable and possibly incompatible code. I don't personally like any of the people that, when you optimize, say *"oh if you're going for speed, why use Python?"* - perhaps it just piques my curiosity to make my program as fast as it can be sometimes - and when people tell you to learn another language; it pours a huge amount of fuel onto a tenderly fire that was burning in you.
+Just so you know, this only exists for the people that want to micro-optimize code and have the consequence of possibly more unreadable, unmanageable and possibly incompatible code.
+I don't personally like any of the people that - when you talk about optimization - say *"oh if you're going for speed, why use Python and not some natively faster alternative like X?"* - I'd guess it just piques my curiosity to make my program as fast as it can be sometimes - and when people tell you to learn another language; it pours a huge amount of fuel onto a tenderly fire that was burning in you.
+Plus learning another language for some speed gains? That's too much work, and Python is a perfect tool for people that don't want to spend too much time coding something.
 
 Although, never should you follow many of these practices in industrial or professional environments; although exceptions can be made, most of the optimizations fall under the categories listed in the former paragraph (more unreadable, unmanageable and possibly incompatible code.)
 
