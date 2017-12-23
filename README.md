@@ -340,7 +340,7 @@ But I don't want a *rough* assumption, so I'll test for all values between 512 a
 | `list(seq)`  | 704             | 3.36 usec  |
 
 
-Now, I cut the list early because (a) I'm not going to wait 20 minutes for the rest of it to complete and (b) I've found where the `list(seq)` speed converges into a speed faster than the other two operations.
+Now, I cut the list early because (a) I'm not going to wait 20 minutes for the rest of it to complete and (b) I've found where the `list(seq)` speed intersects the other two operations' speeds.
 As you can see, for the first three records, `seq.copy()` and `seq[:]` draw in speed and `list(seq)` is 0.01 usec faster, then for the next record: `seq.copy()` is second, `seq{:]` is last, and `list(seq)` overtakes first, then finally the third record shows `seq.copy()` coming second again, `seq[:]` coming last and `list(seq)` staying in first for speed.
 
 **CONCLUSION:**
