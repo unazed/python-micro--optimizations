@@ -115,7 +115,8 @@ Neither Python 3.7.0a2, 3.6.3, 3.2.3, 2.7.14, 2.0.1, 1.6.1 showed any difference
 # why (for non-complex functions) you should be returning: `True`, `False` or `None`
 
 
-By `non-complex functions` I'm referring to functions whose return types are things like class instances or irregular types, however not something like `str`, `int`, `float`, or so forth.
+By `non-complex functions` I'm not referring to functions whose return types are irregular, non-primitive types like strings, integers, floats etc.; rather referring to functions that *do*/*can* return strings/integers/floats/etc. and it'd suffice it just fine.
+For example:
 
 ```py
 def bad_function(*args, **kwargs):
@@ -126,7 +127,7 @@ def bad_function(*args, **kwargs):
   return "good"
 ```
 
-Simplified to:
+Can be simplified to:
 
 ```py
 def good_function(*args, **kwargs):
