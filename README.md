@@ -187,6 +187,7 @@ Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.7`
 
 **NOTE:** I didn't use `map(...)` since (a) it wouldn't catch any errors until converted to a list (b) when it *is* converted to a list, it'll remove the point of any speed provided by the iterator (c) a list comprehension is faster (d) a list comprehension is more Pythonic.
 
+![](https://i.imgur.com/Ubooq40.png)
 
 # `%` formatting is still faster than `str.format`
 
