@@ -231,6 +231,8 @@ Also, in Python you might notice that integers aren't globals nor locals - they'
 
 2) `socket.socket(...)` (as of Python 3) doesn't need to take `family` and `type` parameters, calling `socket.socket()` will automatically create a AF_INET, SOCK_STREAM socket.
 
+3) `str.split(...)` if you only plan on splitting per space, there's no need to do `str.split(" ")`, just doing `str.split()` will yield the same results.
+
 
 # `seq.copy()`, `seq[:]` or `list(seq)`?
 
