@@ -512,3 +512,44 @@ Here are results for all of them with differing list magnitudes:
 ![](https://i.imgur.com/RIokUAY.png)
 
 Unsurpisingly, `[i for i in tup]` was the slowest way as it creates a redundant variable `i`, and the other two methods seem to carry on with the same pace.
+
+```python
+  1           0 LOAD_CONST               0 (<code object <listcomp> at 0x7f7f4488b660, file "<dis>", line 1>)
+              2 LOAD_CONST               1 ('<listcomp>')
+              4 MAKE_FUNCTION            0
+              6 LOAD_NAME                0 (tup)
+              8 GET_ITER
+             10 CALL_FUNCTION            1
+             12 RETURN_VALUE
+
+Disassembly of <code object <listcomp> at 0x7f7f4488b660, file "<dis>", line 1>:
+  1           0 BUILD_LIST               0
+              2 LOAD_FAST                0 (.0)
+        >>    4 FOR_ITER                 8 (to 14)
+              6 STORE_FAST               1 (i)
+              8 LOAD_FAST                1 (i)
+             10 LIST_APPEND              2
+             12 JUMP_ABSOLUTE            4
+        >>   14 RETURN_VALUE
+```
+
+For `[i for i in tup]` the bytecode disassembly explains all the overhead.
+
+```python
+  1           0 LOAD_FAST                0 (tup)
+              2 BUILD_LIST_UNPACK        1
+              4 RETURN_VALUE
+```
+
+Disassembly for `[*tup]`
+
+```python
+  1           0 LOAD_GLOBAL              0 (list)
+              2 LOAD_FAST                1 (tup)
+              4 CALL_FUNCTION            1
+              6 RETURN_VALUE
+```
+
+Disassembly for `list(tup)`
+
+Theoretically, `[*tup]` would be the fastest because there isn't any explicit function call nor is there a global which has to be loaded. It is also the nicest looking.
