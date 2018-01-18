@@ -35,12 +35,14 @@ def f(x):
 # when you should be using `if not x`, `if x`, `if x == 1`, `if x == 0`, `if x is None` or `if x == None`
 
 `if not x`: evaluates to True for when:
+
               `x` -> `0`
               
 The condition does not evaluate to True for negatives or any positives -- nor any special float values like `inf` or `nan`
  
  
 `if x`: evaluates to True for when:
+
               `1` <= `x` <= `inf`
               `-inf` <= `x` < `0`
               
@@ -48,24 +50,28 @@ The condition does not evaluate to True just for `1`, so keep in mind when doing
 
 
 `if x == 1`: evaluates to True for when:
+
               `x` -> `1`
               
 When doing any form of code-review, don't note something like this as a request for simplification to something like `if x` - since as explained above - unless the conditions exempt this malpractice, you cannot always assume that `x` is `1`, but rather between `-inf, -1 and 1, inf`.
 
 
 `if x == 0`: evaluates to True for when:
+
               `x` -> `0`
               
 Unlike previous explanations, this can be utmostly simplified to `if not x`.
 
 
 `if x is None`: evaluates to True for when:
+
               `x` -> `NoneType`
               
 This is the preferred form of checking whether arbitrary `x` is `None` as it is faster (since it doesn't call an underlying `__eq__`).
 
 
 `if x == None`: evaluates to True for when:
+
               `x` -> `NoneType`
               
 Unlike the relative former example (`if x is None`), this calls the underlying (yet seemingly unexistent/unimplemented-- clarify?) `__eq__` function, which provides call overhead and thus slows it down.
