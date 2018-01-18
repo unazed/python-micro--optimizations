@@ -111,8 +111,8 @@ Python 3.7.0a2, 3.6.3, 3.2.3, 2.7.14, 2.0.1, 1.6.1 showed performance difference
 # why (for non-complex functions) you should be returning: `True`, `False` or `None`
 
 
-By `non-complex functions` I refer to functions that should be basically returning boolean types:
-For example something that is in the form of a non-complex function but should suffice being one without any performance changes:
+By `non-complex functions` I refer to functions that should be returning boolean types.
+For example a function that is in the bloated form of a could-be non-complex function:
 
 ```py
 def bad_function(*args, **kwargs):
@@ -131,6 +131,7 @@ def good_function(*args, **kwargs):
 ```
 
 Primitively, the concept applied is returning either `True` or `False` because strings are hard-coded, nasty and only require predefining them at start of code so that you don't make your code extremely static.
+
 `True`, `False` and `None` are all predefined and standard values; they let you implement checks like `if good_function(1, 'oops'):` instead of having to do `if bad_function(1, 'oops') == "good"`. An issue that might arise is when you need more than three return values -- which typically indicates you're doing something wrong and should revise your function -- however, in these cases you can consider options like: a flag byte, raising exceptions, building another type, or returning different integers like 2, -1, 255 etc.
 
 
