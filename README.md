@@ -62,7 +62,7 @@ Unlike previous explanations, this can be utmostly simplified to `if not x`.
 `if x is None`: evaluates to True for when:
               `x` -> `NoneType`
               
-This is the preferred form of checking whether arbitrary `x` is `None` as it is faster (since it doesn't call an underyling `__eq__`).
+This is the preferred form of checking whether arbitrary `x` is `None` as it is faster (since it doesn't call an underlying `__eq__`).
 
 
 `if x == None`: evaluates to True for when:
