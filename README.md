@@ -19,7 +19,7 @@ def f(x):
     return f(x+1)
 ```
 
-Consider the following case; the `else` syntax is redundant as the prior `return` already breaks the flow of the program therefore there is no point for the redundant `else` clause. Surprisingly, even though this is an obvious flaw, I've seen it multiple times so make sure you don't mistakenly make it.
+Consider the following case; the `else` syntax is redundant as the prior `return` already breaks the flow of the program therefore there is no point for the redundant `else` clause. Surprisingly, even though this is an obvious simplification, I've seen it multiple times so make sure you don't mistakenly make it.
 
 ```py
 def f(x):
