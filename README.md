@@ -60,7 +60,7 @@ This is the preferred form of checking whether arbitrary `x` is `None` as it is 
 
 `if x == None` evaluates to True for when: `x` -> `NoneType`
               
-Unlike the relative former example (`if x is None`), this calls the underlying (yet seemingly unexistent/unimplemented-- clarify?) `__eq__` function, which provides call overhead and thus slows it down.
+This method calls the underlying (yet seemingly unexistent/unimplemented/hidden -- clarify?) `__eq__` function, which provides call overhead and execution overhead.
 
 
 ```
