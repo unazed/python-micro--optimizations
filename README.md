@@ -552,4 +552,4 @@ Disassembly for `[*tup]`
 
 Disassembly for `list(tup)`
 
-Theoretically, `[*tup]` would be the fastest because there isn't any explicit function call nor is there a global which has to be loaded. It is also the nicest looking.
+Theoretically, `[*tup]` would be the fastest because there isn't any explicit function call nor is there a global which has to be loaded. It is also the nicest looking which is a benefit.
