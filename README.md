@@ -2,7 +2,7 @@
 a handful of optimizations, tricks and cool things i've learned while doing python
 
 
-Just so you know, this only exists for the people that want to micro-optimize code and have the consequence of possibly more unreadable, unmanageable and possibly incompatible code.
+This exists for the people that want to micro-optimize code and have the consequence of possibly more unreadable, unmanageable and possibly incompatible code.
 
 # return statements in single else clauses at the end of functions
 
