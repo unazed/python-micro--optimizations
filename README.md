@@ -399,19 +399,9 @@ last_item = i
 Logical enough, right? Python doesn't have block scopes, so this'd work as intended.
 
 
-# does listening to music whilst coding help in any way/shape or form?
-
-
-Subjectively, it doesn't help me if the music has vocals or something I have to spend time processing and analyzing ephemerally; I miss things out, I make syntax errors and my logic becomes volatile. But I do enjoy a quiet and light tranquil piano melody playing during when I code - but even then I still need my piece of mind when I'm reading things else I'll be distracted even by a single piano note.
-
-Sadly, there's no general answer, I can't tell you that rock music will make your code any worse than somebody else's code would be when they're listening to ASMR; it's all based around how your brain processes things and how you partition your attention. 
-Not going to lie though, those `programming mix`xes are just a tad bit weird.
-
-Cliché-ly, the answer is going to end up being that your own experimentation will lead to your best fit.
-
-
 # should i use raw sockets or should i create my own interface to raw sockets?
 
+**NOTE:** Although this may seem oddly specific, this applies to the general concept of creating wrappers for lower level libraries.
 
 Using sockets is cool, but so is using sockets and making your own interface. Repetitive code isn't very nice, but the overhead with the function calls isn't efficient. Shorter, concise and readable code is beautiful - but having ability to maximize your code's utility is always nice.
 
