@@ -489,6 +489,8 @@ Here are results for all of them with differing list magnitudes:
 
 Unsurpisingly, `[i for i in tup]` was the slowest way as it creates a redundant variable `i`, and the other two methods seem to carry on with the same pace.
 
+Disassembly for `[i for i in tup]`
+
 ```python
   1           0 LOAD_CONST               0 (<code object <listcomp> at 0x7f7f4488b660, file "<dis>", line 1>)
               2 LOAD_CONST               1 ('<listcomp>')
@@ -509,7 +511,7 @@ Disassembly of <code object <listcomp> at 0x7f7f4488b660, file "<dis>", line 1>:
         >>   14 RETURN_VALUE
 ```
 
-For `[i for i in tup]` the bytecode disassembly explains all the overhead.
+Disassembly for `[*tup]`
 
 ```python
   1           0 LOAD_FAST                0 (tup)
@@ -517,7 +519,7 @@ For `[i for i in tup]` the bytecode disassembly explains all the overhead.
               4 RETURN_VALUE
 ```
 
-Disassembly for `[*tup]`
+Disassembly for `list(tup)`
 
 ```python
   1           0 LOAD_GLOBAL              0 (list)
@@ -526,6 +528,6 @@ Disassembly for `[*tup]`
               6 RETURN_VALUE
 ```
 
-Disassembly for `list(tup)`
+The overhead for the list comprehension is self-explanatory.
 
-Theoretically, `[*tup]` would be the fastest because there isn't any explicit function call nor is there a global which has to be loaded. It is also the nicest looking which is a benefit.
+Theoretically, `[*tup]` would have been the fastest because there isn't any explicit function call nor is there a global which has to be loaded. It is also the nicest looking which is a benefit.
