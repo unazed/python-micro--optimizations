@@ -487,7 +487,7 @@ Here are results for all of them with differing list magnitudes:
 
 ![](https://i.imgur.com/RIokUAY.png)
 
-Unsurpisingly, `[i for i in tup]` was the slowest way as it creates a redundant variable `i`, and the other two methods seem to carry on with the same pace.
+Unsurprisingly, `[i for i in tup]` was the slowest way as it created a redundant variable `i`, and the two other methods seem to carry on with the same slope.
 
 Disassembly for `[i for i in tup]`
 
