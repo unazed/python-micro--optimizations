@@ -217,7 +217,7 @@ Also, in Python you might notice that integers aren't globals nor locals - they'
 
 2) `socket.socket(...)` (as of Python 3) doesn't need to take `family` and `type` parameters, calling `socket.socket()` will automatically create a AF_INET, SOCK_STREAM socket.
 
-3) `str.split(...)` if you only plan on splitting per space, there's no need to do `str.split(" ")`, just doing `str.split()` will yield the same results.
+3) You can replace trivial accounts of `str.split(' ')` with `str.split()`, although they are not technically the same as `str.split(' ')` splits on every space whereas `str.split()` splits on any account of whitespace (as found in `strings.whitespace`) - it is very rare that you have to split specifically on the `0x20` character.
 
 
 # `seq.copy()`, `seq[:]` or `list(seq)`?
