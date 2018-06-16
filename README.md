@@ -531,3 +531,11 @@ Disassembly for `list(tup)`
 The overhead for the list comprehension is self-explanatory.
 
 Theoretically, `[*tup]` would have been the fastest because there isn't any explicit function call nor is there a global which has to be loaded. It is also the nicest looking which is a benefit.
+
+# sometimes generators are worse to use
+
+Recently I had argued that `''.join(f(x) for x in seq)` is not only prettier, but faster than `''.join([f(x) for x in seq])`. My reason being that the generator `(f(x) for x in seq)` would generate as each value is required, rather than fully evaluating the comprehension and creating a, possibly, huge data-set and passing it to the `str.join`; and so the inefficiency being that all the overhead on the CPU and RAM happens in one go, however it's apparent that the `next(gen)` overhead that occurs during iteration of a generator is much more inefficient.
+
+![](https://i.imgur.com/6OI3tiF.png)
+
+smh.
