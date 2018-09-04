@@ -2,7 +2,7 @@
 a handful of optimizations, tricks and cool things i've learned while doing python
 
 
-This exists for the people that want to micro-optimize code and have the consequence of possibly more unreadable, unmanageable and possibly incompatible code.
+This exists for the people that want to micro-optimize code and have the consequence of possibly more unreadable, unmanageable and possibly incompatible (yet faster) code.
 
 # return statements in single else clauses at the end of functions
 
@@ -15,7 +15,7 @@ def f(x):
     return f(x+1)
 ```
 
-Consider the following case; the `else` syntax is redundant as the prior `return` already breaks the flow of the program therefore there is no point for the redundant `else` clause. Surprisingly, even though this is an obvious simplification, I've seen it multiple times so make sure you don't mistakenly make it.
+Consider the following case; the `else` syntax is redundant as the prior `return` already breaks the flow of the program therefore there is no point for the redundant `else` clause. Surprisingly, even though this is an obvious simplification, I've seen it multiple times so make sure you don't mistakenly make it. Although, it is more of a design optimization than a performance optimization.
 
 ```py
 def f(x):
@@ -101,33 +101,6 @@ Python 3.7.0a2, 3.6.3, 3.2.3, 2.7.14, 2.0.1, 1.6.1 showed performance difference
 
 ![](https://i.imgur.com/gcfw7FN.png)
 
-# why (for non-complex functions) you should be returning: `True`, `False` or `None`
-
-
-By `non-complex functions` I refer to functions that should be returning boolean types.
-For example a function that is in the bloated form of a could-be non-complex function:
-
-```py
-def bad_function(*args, **kwargs):
-  if not args:
-    return "bad args"
-  elif not kwargs:
-    return "bad kwargs"
-  return "good"
-```
-
-Can be simplified to:
-
-```py
-def good_function(*args, **kwargs):
-  return bool(args and kwargs)
-```
-
-Primitively, the concept applied is returning either `True` or `False` because strings are hard-coded, nasty and only require predefining them at start of code so that you don't make your code extremely static.
-
-`True`, `False` and `None` are all predefined and standard values; they let you implement checks like `if good_function(1, 'oops'):` instead of having to do `if bad_function(1, 'oops') == "good"`. An issue that might arise is when you need more than three return values -- which typically indicates you're doing something wrong and should revise your function -- however, in these cases you can consider options like: a flag byte, raising exceptions, building another type, or returning different integers like 2, -1, 255 etc.
-
-
 # pure python is faster than regular expressions, so optimize where you can
 
 
@@ -187,7 +160,7 @@ Run against 1,000,000 cycles with `127.0.0.1` as input, the code took only `2.7`
 1000000 loops, best of 3: 0.431 usec per loop
 ```
 
-say no more
+say no more (jokingly stated, please do use f-strings or `str.format` when possible as `%`-formatting is soon to-be deprecated)
 
 **NOTE:** But to make it fair; here's the test results that came back for `f` strings, `str.format` and `% formatting`:
 ![](https://i.imgur.com/BkSv67f.png)
@@ -217,7 +190,7 @@ Also, in Python you might notice that integers aren't globals nor locals - they'
 
 2) `socket.socket(...)` (as of Python 3) doesn't need to take `family` and `type` parameters, calling `socket.socket()` will automatically create a AF_INET, SOCK_STREAM socket.
 
-3) You can replace trivial accounts of `str.split(' ')` with `str.split()`, although they are not technically the same as `str.split(' ')` splits on every space whereas `str.split()` splits on any account of whitespace (as found in `strings.whitespace`) - it is very rare that you have to split specifically on the `0x20` character.
+3) You can replace trivial accounts of `str.split(' ')` with `str.split()`, although they are not technically the same as `str.split(' ')` splits on every space (0x20 ASCII) whereas `str.split()` splits on any account of whitespace (as found in `strings.whitespace`)-- it is, however, uncommon that you have to split specifically on the `0x20` character.
 
 
 # `seq.copy()`, `seq[:]` or `list(seq)`?
@@ -309,7 +282,7 @@ Now it's either that I'm drugged or there is actually a speed gain using `list(s
 
 So this table agrees with the fact `list(seq)` is slower, so with this one can deduce that `list(seq)` is slower for all lists of magnitude under (thereabout) `1024`.
 
-But I don't want a *rough* assumption, so I'll test for all values between 512 and 1024 non-inclusively. All in steps of `32` because I don't want the table to be humongous.
+But I don't want a *rough* assumption, so I'll test for all values between 512 and 1024 exclusively. All in steps of `32` because I don't want the table to be humongous.
 
 
 | Operation | Amount of Elements | Time Taken |
@@ -339,7 +312,8 @@ As you can see, for the first three records, `seq.copy()` and `seq[:]` draw in s
 
 **CONCLUSION:**
 
-`seq.copy()` for all sequences with magnitude below 544, will be second fastest to `seq[:]` and the slowest method will be `list(seq)`; however, for all sequences with a bigger magnitude, `list(seq)` will be fastest and both `seq[:]`and `seq.copy()` will have a seemingly random disparity. 
+`seq.copy()` for all sequences with magnitude below 544, will be second fastest to `seq[:]` and the slowest method will be `list(seq)`; however, for all 
+sequences with a bigger magnitude, `list(seq)` will be fastest and both `seq[:]`and `seq.copy()` will have a seemingly random disparity. 
 
 *NOTE:* Element size doesn't seem to affect the operations' speed.
 
@@ -396,10 +370,10 @@ for i in a:
 last_item = i
 ```
 
-Logical enough, right? Python doesn't have block scopes, so this'd work as intended.
+Logical enough. Python doesn't have block scopes, so this'd work as intended.
 
 
-# should i use raw sockets or should i create my own interface to raw sockets?
+# should i use bare sockets or should i create my own interface to bare sockets?
 
 **NOTE:** Although this may seem oddly specific, this applies to the general concept of creating wrappers for lower level libraries.
 
@@ -407,7 +381,7 @@ Using sockets is cool, but so is using sockets and making your own interface. Re
 
 Speaking perfomance-wise, an OOP interface will *always* be slower than the raw, unabstracted interface to the library. When you're creating an interface the only things that you're preventing are semantical mistakes, but all you're really doing is squeezing a bunch of liquids into a container. Sure, they'll stay consistent wherever you pour them; no mistake about that, but any mistakes in the actual 'squeezing' bit, perhaps missing some functionality or failing to generalize it; then you'll just mix one container of incompatible liquid with some reactive surface which'll create a huge mess and practically create the inverse effect that you want to actually achieve.
 
-Raw sockets are faster and more customizable; but their prologues are repeated so many times and equally so their epilogues.
+Bare sockets are faster and more customizable; but their prologues are repeated so many times and equally so their epilogues.
 
 
 ```py
@@ -472,8 +446,7 @@ sockfd.close()
 ```
 
 2 references to `Socket`, 3 references to `sockfd` and not a single `sys.exit`. A drastic improvement from the linear paradigm shown in the other example.
-But, if you have any intellect you'd notice that, well clearly there's waaay more references to `Socket` and there is still a `try: ... except (,): ...` embedded within, just not seen in `main.py`. Well that's the point of an interface and that displays the only real features that ir provides, an interface will never be faster, besides fixing any possible mistkaes that could've been made in the task of rewriting code.
-
+But, if you have any sense you'd notice that, well clearly there's waaay more references to `Socket` and there is still a `try: ... except (,): ...` embedded within, just not seen in `main.py`. Well that's the point of an interface, and that displays the only real features that it provides, an interface will never be faster, besides fixing any possible mistakes that could've been made in the task of rewriting code.
 
 # list conversion. best methods?
 
@@ -487,7 +460,7 @@ Here are results for all of them with differing list magnitudes:
 
 ![](https://i.imgur.com/RIokUAY.png)
 
-Unsurprisingly, `[i for i in tup]` was the slowest way as it created a redundant variable `i`, and the two other methods seem to carry on with the same slope.
+Unsurprisingly, `[i for i in tup]` was the slowest way as it created a redundant variable `i`, and the two other methods seem to carry on with the same gradient.
 
 Disassembly for `[i for i in tup]`
 
